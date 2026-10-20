@@ -16,6 +16,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+### เปิดใช้งานจากโทรศัพท์ในเครือข่ายเดียวกัน
+
+1. เชื่อม Mac และโทรศัพท์เข้ากับ Wi-Fi เดียวกัน หรือเปิด Personal Hotspot ให้ Mac เชื่อมต่อ
+2. รันคำสั่งนี้ในโฟลเดอร์โปรเจกต์:
+
+```bash
+npm run dev:phone
+```
+
+3. ดู IP ของ Mac แล้วเปิด `http://<IP-ของ-Mac>:3000` จากโทรศัพท์ เช่น `http://172.20.10.3:3000`
+
+ห้ามใช้ `localhost:3000` บนโทรศัพท์ เพราะ `localhost` จะหมายถึงโทรศัพท์เอง หากเข้าไม่ได้ให้ตรวจว่าอุปกรณ์อยู่เครือข่ายเดียวกันและ macOS Firewall อนุญาต Node.js แล้ว
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

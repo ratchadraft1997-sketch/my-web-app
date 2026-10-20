@@ -7,13 +7,12 @@ import { getDefaultChecklistItems } from "@/lib/trip-planning";
 
 const STORAGE_KEY = "nakhon_nayok_user_trips";
 const TRIPS_EVENT = "nakhon_nayok_trips_updated";
-const EMPTY_TRIPS: TripPlan[] = [];
 
 let cachedRaw: string | null = null;
 let cachedTrips: TripPlan[] = [];
 
 function getSnapshot(): TripPlan[] {
-  if (typeof window === "undefined") return EMPTY_TRIPS;
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw !== cachedRaw) {
@@ -27,7 +26,7 @@ function getSnapshot(): TripPlan[] {
 }
 
 function getServerSnapshot(): TripPlan[] {
-  return EMPTY_TRIPS;
+  return [];
 }
 
 function subscribe(callback: () => void) {

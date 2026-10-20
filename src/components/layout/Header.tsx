@@ -6,6 +6,10 @@ import { getDemoUserFromCookieValue } from "@/lib/auth/demo-user";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import type { DemoUser } from "@/lib/auth/demo-user";
 
+// The header is part of every route. Never let an unavailable auth service
+// prevent the application shell from rendering.
+const AUTH_TIMEOUT_MS = 350;
+
 export async function Header() {
   const demoUser = getDemoUserFromCookieValue((await cookies()).get("demo_user")?.value);
   let user: DemoUser | SupabaseUser | null = demoUser;
@@ -14,7 +18,12 @@ export async function Header() {
       const supabase = await createClient();
       const {
         data: { user: authUser },
-      } = await supabase.auth.getUser();
+      } = await Promise.race([
+        supabase.auth.getUser(),
+        new Promise<{ data: { user: null } }>((resolve) =>
+          setTimeout(() => resolve({ data: { user: null } }), AUTH_TIMEOUT_MS)
+        ),
+      ]);
       user = authUser;
     } catch {
       // If Supabase is unavailable, show the signed-out navigation state.

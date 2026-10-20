@@ -13,12 +13,12 @@ const trip = {
   checklist: { items: [{ id: "1", label: "เตรียมกระเป๋า", checked: true }] },
 };
 
-const shareText = buildTripShareText(trip as unknown as Parameters<typeof buildTripShareText>[0]);
+const shareText = buildTripShareText(trip as any);
 assert.match(shareText, /ทริปสายน้ำตก/);
 assert.match(shareText, /น้ำตกสาริกา/);
 assert.match(shareText, /เหลือ 550 บาท/);
 
-const summary = getTripBudgetSummary(trip as unknown as Parameters<typeof getTripBudgetSummary>[0]);
+const summary = getTripBudgetSummary(trip as any);
 assert.equal(summary.total, 1200);
 assert.equal(summary.spent, 650);
 assert.equal(summary.remaining, 550);
