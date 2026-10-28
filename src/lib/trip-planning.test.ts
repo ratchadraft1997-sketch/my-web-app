@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { buildTripShareText, getTripBudgetSummary, getDefaultChecklistItems } from "./trip-planning";
 
-const trip = {
+const trip: Parameters<typeof buildTripShareText>[0] = {
   title: "ทริปสายน้ำตก",
   duration: "1 วัน",
   estimatedBudget: "500 บาท",
@@ -10,15 +10,14 @@ const trip = {
     { placeName: "เขาช่องลม" },
   ],
   budget: { total: 1200, spent: 650, note: "ยังเหลือ" },
-  checklist: { items: [{ id: "1", label: "เตรียมกระเป๋า", checked: true }] },
 };
 
-const shareText = buildTripShareText(trip as any);
+const shareText = buildTripShareText(trip);
 assert.match(shareText, /ทริปสายน้ำตก/);
 assert.match(shareText, /น้ำตกสาริกา/);
 assert.match(shareText, /เหลือ 550 บาท/);
 
-const summary = getTripBudgetSummary(trip as any);
+const summary = getTripBudgetSummary(trip);
 assert.equal(summary.total, 1200);
 assert.equal(summary.spent, 650);
 assert.equal(summary.remaining, 550);

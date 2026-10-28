@@ -1,49 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nakhon Nayok Trip
 
-## Getting Started
+เว็บแอปสำรวจสถานที่ท่องเที่ยวและวางแผนทริปในจังหวัดนครนายก สร้างด้วย Next.js และ Supabase
 
-First, run the development server:
+## เริ่มพัฒนาในเครื่อง
+
+ต้องใช้ Node.js และ npm จากนั้นติดตั้ง dependencies:
+
+```bash
+npm install
+```
+
+สร้างไฟล์ `.env.local` ที่ root ของโปรเจกต์:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<project-id>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable-or-anon-key>
+```
+
+ใช้ Supabase **Publishable key** หรือ `anon` key เท่านั้น ห้ามใช้ `Secret key` หรือ `service_role` key ในแอปฝั่งเว็บ และห้าม commit ไฟล์ `.env.local`
+
+รันเซิร์ฟเวอร์พัฒนา:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด [http://localhost:3000](http://localhost:3000)
 
-### เปิดใช้งานจากโทรศัพท์ในเครือข่ายเดียวกัน
-
-1. เชื่อม Mac และโทรศัพท์เข้ากับ Wi-Fi เดียวกัน หรือเปิด Personal Hotspot ให้ Mac เชื่อมต่อ
-2. รันคำสั่งนี้ในโฟลเดอร์โปรเจกต์:
+เปิดทดสอบจากโทรศัพท์ที่อยู่ Wi-Fi เดียวกัน:
 
 ```bash
 npm run dev:phone
 ```
 
-3. ดู IP ของ Mac แล้วเปิด `http://<IP-ของ-Mac>:3000` จากโทรศัพท์ เช่น `http://172.20.10.3:3000`
+จากนั้นเปิด `http://<IP-ของ-Mac>:3000` บนโทรศัพท์
 
-ห้ามใช้ `localhost:3000` บนโทรศัพท์ เพราะ `localhost` จะหมายถึงโทรศัพท์เอง หากเข้าไม่ได้ให้ตรวจว่าอุปกรณ์อยู่เครือข่ายเดียวกันและ macOS Firewall อนุญาต Node.js แล้ว
+## ตรวจสอบก่อนเผยแพร่
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## เผยแพร่และอัปเดตเว็บไซต์
 
-## Learn More
+โปรเจกต์ Vercel `app-in-nayok` เชื่อมกับ GitHub repository `ratchadraft1997-sketch/my-web-app` และ branch `main` แล้ว
 
-To learn more about Next.js, take a look at the following resources:
+1. แก้โค้ดและทดสอบในเครื่อง
+2. ตรวจ lint และ production build ด้วยคำสั่งด้านบน
+3. commit และ push ไป `main`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git add <ไฟล์ที่แก้>
+   git commit -m "Describe your change"
+   git push
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Vercel จะ build และ deploy เวอร์ชันใหม่จาก `main` อัตโนมัติ ไม่ต้องสร้างโปรเจกต์หรือกรอก environment variables ใหม่ทุกครั้ง
+5. ตรวจสถานะและ build log ที่ [Vercel Deployments](https://vercel.com/ratchadraft1997-sketch/app-in-nayok/deployments) เมื่อสถานะเป็น **Ready** จึงเปิดเว็บไซต์ได้
 
-## Deploy on Vercel
+การ push ไป branch อื่นจะสร้าง Preview Deployment ส่วน Production ใช้ branch `main`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+ตั้งค่า Environment Variables ของ Production ใน Vercel ที่ **Project Settings → Environment Variables** โดยต้องมี:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` (ใช้ Publishable key หรือ `anon` key)
+
+ถ้าเปลี่ยน Environment Variables ให้สั่ง Redeploy เพื่อให้ build ใหม่รับค่าเหล่านั้น
+
+## Supabase
+
+- ตั้งค่า Google OAuth และ callback URL ตาม [SUPABASE_OAUTH_SETUP.md](./SUPABASE_OAUTH_SETUP.md)
+- Schema และ seed data อยู่ที่ [supabase/schema.sql](./supabase/schema.sql)
+- ทริปส่วนตัว รายการโปรด และบันทึกการเดินทางบางส่วนเก็บใน browser `localStorage` จึงยังไม่ซิงก์ข้ามอุปกรณ์หรือบัญชีผู้ใช้
+
+## คำสั่งที่ใช้บ่อย
+
+| คำสั่ง | รายละเอียด |
+| --- | --- |
+| `npm run dev` | เปิดเซิร์ฟเวอร์พัฒนา |
+| `npm run dev:phone` | เปิดเซิร์ฟเวอร์ให้โทรศัพท์ในเครือข่ายเดียวกันเข้าถึง |
+| `npm run lint` | ตรวจรูปแบบและปัญหาด้วย ESLint |
+| `npm test` | รันชุดทดสอบ |
+| `npm run build` | สร้าง production build |
+| `npm run start` | เปิด production build ในเครื่อง |

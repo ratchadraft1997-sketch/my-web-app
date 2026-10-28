@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore, useRef, useState } from "react";
+import Image from "next/image";
 import { Camera, Heart, PenLine, Repeat, Sparkles, XCircle } from "lucide-react";
 import { TripPlan } from "@/types/trip";
 
@@ -188,7 +189,14 @@ export function TripJournalPanel({ trip }: { trip: TripPlan }) {
         </div>
 
         {photo && (
-          <img src={photo} alt="Journal upload preview" className="h-32 w-full rounded-2xl object-cover" />
+          <div className="relative h-32 w-full">
+            <Image
+              src={photo}
+              alt="Journal upload preview"
+              fill
+              className="rounded-2xl object-cover"
+            />
+          </div>
         )}
 
         <button
@@ -205,7 +213,14 @@ export function TripJournalPanel({ trip }: { trip: TripPlan }) {
           {entries.map((entry) => (
             <div key={entry.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
               {entry.photo && (
-                <img src={entry.photo} alt="Trip memory" className="mb-2 h-36 w-full rounded-xl object-cover" />
+                <div className="relative mb-2 h-36 w-full">
+                  <Image
+                    src={entry.photo}
+                    alt="Trip memory"
+                    fill
+                    className="rounded-xl object-cover"
+                  />
+                </div>
               )}
               <div className="space-y-2 text-xs text-slate-700">
                 <div className="flex items-center gap-2 text-emerald-700">
